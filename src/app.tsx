@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './assets/icons/logo.svg';
-import {SApp, SHeader, SLink, SLogo} from "./assets/styles/app.styles";
+import React, {useState} from 'react';
+import ProductListComponent from "./components/product/list/product-list.component";
+import {store} from './store/store'
+import {Provider} from 'react-redux'
+import CreateNewProduct from "./components/CreateNewProduct";
+import ProductCreationForm from "./components/product/ProductCreationForm";
 
-function App() {
+
+
+
+const App = () => {
+    const [isVisible, setVisible] = useState<boolean>(false);
+    const changeVisible = () => setVisible(prevState => !prevState);
+
+
     return (
-        <SApp>
-            <SHeader>
-                <SLogo src={logo} alt="logo"/>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <SLink
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </SLink>
-            </SHeader>
-        </SApp>
+        <Provider store={store}>
+            <CreateNewProduct changeVisible={changeVisible} />
+            {
+                isVisible && <ProductCreationForm changeVisible={changeVisible} />
+            }
+            <ProductListComponent />
+        </Provider>
     );
-}
+};
 
 export default App;
